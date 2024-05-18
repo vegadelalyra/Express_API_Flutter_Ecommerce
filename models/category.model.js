@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const category = mongoose.model(
+const Category = mongoose.model(
   'Category',
   mongoose.Schema(
     {
@@ -23,7 +23,7 @@ const category = mongoose.model(
         transform: function (doc, ret) {
           ret.categoryId = ret._id.toString();
           delete ret._id;
-          delete ret._v;
+          delete ret.__v;
         },
       },
     }
@@ -31,5 +31,5 @@ const category = mongoose.model(
 );
 
 module.exports = {
-  category,
+  Category,
 };

@@ -1,5 +1,5 @@
 const { MONGO_DB_CONFIG } = require('../config/app.config');
-const { product } = require('../models/product.model');
+const { Product } = require('../models/product.model');
 
 async function createProduct(params, callback) {
   if (!params.productName) {
@@ -11,8 +11,17 @@ async function createProduct(params, callback) {
     );
   }
 
-  const model = new product(params);
-  model
+  if (!params.category) {
+    return callback(
+      {
+        message: 'Category Required',
+      },
+      ''
+    );
+  }
+
+  const productModel = new Product(params);
+  productModel
     .save()
     .then(response => callback(null, response))
     .catch(error => callback(error));
@@ -20,16 +29,29 @@ async function createProduct(params, callback) {
 
 async function getProducts(params, callback) {
   const productName = params.productName;
+  const categoryId = params.categoryId;
 
-  var condition = productName
-    ? { productName: { $regex: new RegExp(productName), $options: 'i' } }
-    : {};
+  var condition = {};
+
+  if (productName) {
+    condition['productName'] = {
+      $regex: new RegExp(productName),
+      $options: 'i',
+    };
+  }
+
+  if (categoryId) {
+    condition['category'] = categoryId;
+  }
 
   let perPage = Math.abs(params.pageSize) || MONGO_DB_CONFIG.PAGE_SIZE;
   let page = (Math.abs(params.page) || 1) - 1;
 
-  product
-    .find(condition, 'productName productImage')
+  Product.find(
+    condition,
+    'productName productShortDescription productPrice productSalePrice productImage productSKU productType stockStatus'
+  )
+    .populate('category', 'categoryName categoryImage')
     .limit(perPage)
     .skip(perPage * page)
     .then(response => callback(null, response))
@@ -39,23 +61,20 @@ async function getProducts(params, callback) {
 async function getProductById(params, callback) {
   const productId = params.productId;
 
-  product
-    .findById(productId)
-    .then(response => {
-      if (!response) callback('Not found Product with id', productId);
-      else callback(null, response);
-    })
+  Product.findById(productId)
+    .populate('category', 'categoryName categoryImage')
+    .then(response => callback(null, response))
     .catch(error => callback(error));
 }
 
 async function updateProduct(params, callback) {
   const productId = params.productId;
 
-  product
-    .findByIdAndUpdate(productId, params, { useFindAndModify: false })
+  Product.findByIdAndUpdate(productId, params, { useFindAndModify: false })
     .then(response => {
-      if (!response) callback('Not found Product with id', productId);
-      else callback(null, response);
+      if (!response) {
+        callback(`Cannot update Product with ID ${productId}`);
+      } else callback(null, response);
     })
     .catch(error => callback(error));
 }
@@ -63,8 +82,7 @@ async function updateProduct(params, callback) {
 async function deleteProduct(params, callback) {
   const productId = params.productId;
 
-  product
-    .findByIdAndDelete(productId)
+  Product.findByIdAndDelete(productId)
     .then(response => {
       if (!response) callback('Not found Product with id', productId);
       else callback(null, response);

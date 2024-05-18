@@ -1,5 +1,5 @@
 const { MONGO_DB_CONFIG } = require('../config/app.config');
-const { category } = require('../models/category.model');
+const { Category } = require('../models/category.model');
 
 async function createCategory(params, callback) {
   if (!params.categoryName) {
@@ -11,7 +11,7 @@ async function createCategory(params, callback) {
     );
   }
 
-  const model = new category(params);
+  const model = new Category(params);
   model
     .save()
     .then(response => callback(null, response))
@@ -28,8 +28,7 @@ async function getCategories(params, callback) {
   let perPage = Math.abs(params.pageSize) || MONGO_DB_CONFIG.PAGE_SIZE;
   let page = (Math.abs(params.page) || 1) - 1;
 
-  category
-    .find(condition, 'categoryName categoryImage')
+  Category.find(condition, 'categoryName categoryImage')
     .limit(perPage)
     .skip(perPage * page)
     .then(response => callback(null, response))
@@ -39,8 +38,7 @@ async function getCategories(params, callback) {
 async function getCategoryById(params, callback) {
   const categoryId = params.categoryId;
 
-  category
-    .findById(categoryId)
+  Category.findById(categoryId)
     .then(response => {
       if (!response) callback('Not found Category with id', categoryId);
       else callback(null, response);
@@ -51,8 +49,7 @@ async function getCategoryById(params, callback) {
 async function updateCategory(params, callback) {
   const categoryId = params.categoryId;
 
-  category
-    .findByIdAndUpdate(categoryId, params, { useFindAndModify: false })
+  Category.findByIdAndUpdate(categoryId, params, { useFindAndModify: false })
     .then(response => {
       if (!response) callback('Not found Category with id', categoryId);
       else callback(null, response);
@@ -63,8 +60,7 @@ async function updateCategory(params, callback) {
 async function deleteCategory(params, callback) {
   const categoryId = params.categoryId;
 
-  category
-    .findByIdAndDelete(categoryId)
+  Category.findByIdAndDelete(categoryId)
     .then(response => {
       if (!response) callback('Not found Category with id', categoryId);
       else callback(null, response);

@@ -36,6 +36,13 @@
             "required": false,
             "description": "Product Name",
             "type": "string"
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "description": "Category ID",
+            "type": "string"
           }
         ],
         "responses": {
@@ -59,6 +66,20 @@
             "type": "string"
           },
           {
+            "name": "category",
+            "in": "formData",
+            "description": "Category ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "productShortDescription",
+            "in": "formData",
+            "description": "Product Short Description",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "productDescription",
             "in": "formData",
             "description": "Product Description",
@@ -72,11 +93,41 @@
             "type": "integer"
           },
           {
+            "name": "productSalePrice",
+            "in": "formData",
+            "description": "Product Sale Price",
+            "required": true,
+            "type": "integer"
+          },
+          {
             "name": "productImage",
             "in": "formData",
             "description": "Product Image",
             "required": true,
             "type": "file"
+          },
+          {
+            "name": "productSKU",
+            "in": "formData",
+            "description": "Product SKU",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "productType",
+            "in": "formData",
+            "description": "Product Type",
+            "required": true,
+            "type": "string",
+            "default": "simple"
+          },
+          {
+            "name": "Stock Status",
+            "in": "formData",
+            "description": "Stock Status",
+            "required": false,
+            "type": "string",
+            "default": "IN"
           }
         ],
         "responses": {
@@ -119,7 +170,18 @@
             "name": "productName",
             "in": "formData",
             "description": "Product Name",
-            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "formData",
+            "description": "Category ID",
+            "type": "string"
+          },
+          {
+            "name": "productShortDescription",
+            "in": "formData",
+            "description": "Product Short Description",
             "type": "string"
           },
           {
@@ -132,7 +194,12 @@
             "name": "productPrice",
             "in": "formData",
             "description": "Product Price",
-            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "productSalePrice",
+            "in": "formData",
+            "description": "Product Sale Price",
             "type": "integer"
           },
           {
@@ -140,6 +207,26 @@
             "in": "formData",
             "description": "Product Image",
             "type": "file"
+          },
+          {
+            "name": "productSKU",
+            "in": "formData",
+            "description": "Product SKU",
+            "type": "string"
+          },
+          {
+            "name": "productType",
+            "in": "formData",
+            "description": "Product Type",
+            "type": "string",
+            "default": "simple"
+          },
+          {
+            "name": "Stock Status",
+            "in": "formData",
+            "description": "Stock Status",
+            "type": "string",
+            "default": "IN"
           }
         ],
         "responses": {

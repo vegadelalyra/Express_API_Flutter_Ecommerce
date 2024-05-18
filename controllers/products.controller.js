@@ -11,7 +11,14 @@ exports.create = (req, res, next) => {
 
       var model = {
         productName: req.body.productName,
+        category: req.body.category,
+        productShortDescription: req.body.productShortDescription,
         productDescription: req.body.productDescription,
+        productPrice: req.body.productPrice,
+        productSalePrice: req.body.productSalePrice,
+        productSKU: req.body.productSKU,
+        productType: req.body.productType,
+        stockStatus: req.body.stockStatus,
         productImage: path != '' ? '/' + path : '',
       };
 
@@ -32,6 +39,7 @@ exports.create = (req, res, next) => {
 exports.findAll = (req, res, next) => {
   var model = {
     productName: req.query.productName,
+    categoryId: req.query.categoryId,
     pageSize: req.query.pageSize,
     page: req.query.page,
   };
@@ -76,7 +84,14 @@ exports.update = (req, res, next) => {
       var model = {
         productId: req.params.id,
         productName: req.body.productName,
+        category: req.body.category,
+        productShortDescription: req.body.productShortDescription,
         productDescription: req.body.productDescription,
+        productPrice: req.body.productPrice,
+        productSalePrice: req.body.productSalePrice,
+        productSKU: req.body.productSKU,
+        productType: req.body.productType,
+        stockStatus: req.body.stockStatus,
         productImage: path != '' ? '/' + path : '',
       };
 
